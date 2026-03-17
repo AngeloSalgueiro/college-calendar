@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "type": "module",
+  "name": "calendar",
+  "version": "1.0.0",
+  "main": "script.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "ics-to-json": "^2.0.2",
+    "jcalendar.js": "^2.12.6",
+    "node-fetch": "^3.3.2"
+  }
+}

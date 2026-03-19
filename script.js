@@ -1,7 +1,7 @@
 let currentDate = new Date();
 const startHour = 8;
 const endHour = 20;
-const hourHeight = 60;
+const hourHeight = 70;
 
 function parseICSDate(icsDate) {
     return new Date(
@@ -35,8 +35,6 @@ async function getEvents() {
     const events = {};
 
     data.forEach(e => {
-        console.log(e)
-
         const startDate = parseICSDate(e.startDate);
         const endDate = parseICSDate(e.endDate);
 
@@ -134,7 +132,19 @@ async function renderWeek() {
 
         dayEvents.forEach(ev => {
             const event = document.createElement("div");
-            event.className = "event";
+            event.classList.add("event");
+
+            if (!ev.description || ev.text === "No title") {
+                event.classList.add("other");
+            } else if (ev.description.includes("PROMO")) {
+                event.classList.add("cm")
+            } else if (/INFO\d+-G\d+/.test(ev.description)) {
+                event.classList.add("td")
+            } else if (/INFO\d+-G\d+-\d+/.test(ev.description)) {
+                event.classList.add("tp")
+            } else {
+                event.classList.add("other");
+            }
 
             const top = (ev.start - startHour) * hourHeight;
             const height = ev.duration * hourHeight;
@@ -143,15 +153,17 @@ async function renderWeek() {
             event.style.height = height + "px";
 
             const title = document.createElement("div")
-            title.style.fontSize = "13px";
+            title.style.fontSize = "12px";
             title.textContent = ev.text
 
             const location = document.createElement("div")
-            location.style.fontSize = "10px"
+            location.style.fontSize = "14px"
+            location.style.paddingTop = "4px"
+            location.style.paddingBottom = "4px"
             location.textContent = ev.location
 
             const description = document.createElement("div")
-            description.style.fontSize = "10px"
+            description.style.fontSize = "12px"
             description.textContent = ev.description
 
             event.appendChild(title)
@@ -168,6 +180,7 @@ async function renderWeek() {
 
 async function changeWeek(offset) {
     currentDate.setDate(currentDate.getDate() + offset * 7);
+    await new Promise(r => setTimeout(r, 100));
     await renderWeek();
 }
 

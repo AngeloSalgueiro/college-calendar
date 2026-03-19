@@ -16,7 +16,7 @@ body {
   background: white;
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* Header */
@@ -55,7 +55,7 @@ button:hover {
 }
 
 .time-slot {
-  height: 60px;
+  height: 70px;
   font-size: 12px;
   color: #666;
   padding: 4px;
@@ -72,7 +72,7 @@ button:hover {
 
 .day-header {
   text-align: center;
-  padding: 10px;
+  padding: 15px;
   font-weight: 600;
   border-bottom: 1px solid #ddd;
   background: #fafafa;
@@ -92,7 +92,7 @@ button:hover {
 }
 
 .hour-row {
-  height: 60px;
+  height: 70px;
   border-bottom: 1px solid #eee;
   position: relative;
 }
@@ -102,12 +102,28 @@ button:hover {
   position: absolute;
   left: 5px;
   right: 5px;
-  background: #4f46e5;
   color: white;
   padding: 6px;
   border-radius: 6px;
   font-size: 12px;
   overflow: hidden;
+}
+
+.cm {
+  background-color: rgb(226, 62, 62);
+}
+
+.td {
+  background-color: rgb(58, 111, 190);
+}
+
+
+.tp {
+  background-color: rgb(121, 231, 77);
+}
+
+.other {
+  background-color: gray;
 }
 
 /* Hover slot */

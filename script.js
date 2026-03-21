@@ -29,7 +29,7 @@ function saveEvents(events) {
 }
 
 async function getEvents() {
-    const response = await fetch("http://localhost:3000/proxy-calendar");
+    const response = await fetch("http://localhost:3000/calendar");
     const data = await response.json();
 
     const events = {};
@@ -57,8 +57,8 @@ async function getEvents() {
             start: start,
             duration: duration,
             category: e.categories,
-            subject: e.modules_for_blocks || "No title",
-            teacher: e.teachers_for_blocks || "No description",
+            subject: e.modules_for_blocks || e.categories || "No title",
+            teacher: e.teachers_for_blocks || "",
             location: e.rooms_for_item_details || "No location"
         });
     });
@@ -75,7 +75,7 @@ async function renderWeek() {
     const today = new Date();
     const events = await getEvents();
 
-    const options = { month: "short", day: "numeric" };
+    const options = { month: "long", day: "numeric" };
     const end = new Date(start);
     end.setDate(start.getDate() + 6);
 
@@ -156,18 +156,6 @@ async function renderWeek() {
                         event.classList.add("other");
                     }
             }
-
-            // if (!ev.description || ev.text === "No title") {
-            //     event.classList.add("other");
-            // } else if (ev.description.includes("PROMO")) {
-            //     event.classList.add("cm")
-            // } else if (/INFO\d+-G\d+/.test(ev.description)) {
-            //     event.classList.add("td")
-            // } else if (/INFO\d+-G\d+-\d+/.test(ev.description)) {
-            //     event.classList.add("tp")
-            // } else {
-            //     event.classList.add("other");
-            // }
 
             const top = (ev.start - startHour) * hourHeight;
             const height = ev.duration * hourHeight;

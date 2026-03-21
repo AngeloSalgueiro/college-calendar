@@ -1,33 +1,29 @@
 import express from "express";
 import cors from "cors";
-import { icsToJson } from 'ics-to-json';
-import fs from "fs/promises";
 
+let cachedTimetable = null;
 let lastUpdate;
 
 async function getTimetable() {
-  let content = "";
-
   try {
-    if (!lastUpdate || (Date.now() - lastUpdate) > 10000) { // 10s cache
+    if (!lastUpdate || (Date.now() - lastUpdate) > 600_000) { // 10s cache
       const response = await fetch(
-        "http://edt-v2.univ-nantes.fr/calendar/ics?timetables[0]=106112"
+        "https://edt-v2.univ-nantes.fr/events?start=2000-03-16&end=2999-03-22&timetables%5B0%5D=106112"
       );
 
       if (!response.ok) throw new Error("Failed to fetch timetable");
 
-      content = await response.text();
-      await fs.writeFile("timetable.ics", content);
+      const content = await response.json();
+
       lastUpdate = Date.now();
-    } else {
-      content = await fs.readFile("timetable.ics", "utf8");
+      cachedTimetable = content
+      return true
     }
   } catch (err) {
     console.error("Error in getTimetable:", err);
-    content = "";
   }
 
-  return content;
+  return false
 }
 
 const app = express();
@@ -36,13 +32,17 @@ app.use(express.static("public"));
 
 app.get("/proxy-calendar", async (req, res) => {
   try {
-    const content = await getTimetable();
+    await getTimetable();
 
-    if (!content || !content.startsWith("BEGIN:VCALENDAR")) {
-      return res.status(500).json({ error: "Could not fetch calendar" });
-    }
+    const content = cachedTimetable;
 
-    const data = icsToJson(content);
+    // if (!content || !content.startsWith("BEGIN:VCALENDAR")) {
+    //   return res.status(500).json({ error: "Could not fetch calendar" });
+    // }
+
+    const data = content // icsToJson(content);
+
+    console.log(data)
 
     res.set("Content-Type", "application/json");
     res.send(data);

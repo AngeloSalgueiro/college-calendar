@@ -35,10 +35,13 @@ async function getEvents() {
     const events = {};
 
     data.forEach(e => {
-        const startDate = parseICSDate(e.startDate);
-        const endDate = parseICSDate(e.endDate);
 
-        const key = formatDateKey(startDate); // ✅ correct day
+        console.log(e)
+
+        const startDate = new Date(e.start_at);
+        const endDate = new Date(e.end_at);
+
+        const key = formatDateKey(startDate);
 
         const start =
             startDate.getHours() + startDate.getMinutes() / 60;
@@ -53,9 +56,10 @@ async function getEvents() {
         events[key].push({
             start: start,
             duration: duration,
-            text: e.summary || "No title",
-            description: e.description || "No description",
-            location: e.location || "No location"
+            category: e.categories,
+            subject: e.modules_for_blocks || "No title",
+            teacher: e.teachers_for_blocks || "No description",
+            location: e.rooms_for_item_details || "No location"
         });
     });
 
@@ -134,17 +138,36 @@ async function renderWeek() {
             const event = document.createElement("div");
             event.classList.add("event");
 
-            if (!ev.description || ev.text === "No title") {
-                event.classList.add("other");
-            } else if (ev.description.includes("PROMO")) {
-                event.classList.add("cm")
-            } else if (/INFO\d+-G\d+/.test(ev.description)) {
-                event.classList.add("td")
-            } else if (/INFO\d+-G\d+-\d+/.test(ev.description)) {
-                event.classList.add("tp")
-            } else {
-                event.classList.add("other");
+            console.log(ev.category)
+            switch (ev.category) {
+                case "CM":
+                    event.classList.add("cm")
+                    break
+                case "TD":
+                    event.classList.add("td")
+                    break
+                case "TP":
+                    event.classList.add("tp")
+                    break
+                default:
+                    if (ev.category?.includes("Contrôle continu")) {
+                        event.classList.add("controle");
+                    } else {
+                        event.classList.add("other");
+                    }
             }
+
+            // if (!ev.description || ev.text === "No title") {
+            //     event.classList.add("other");
+            // } else if (ev.description.includes("PROMO")) {
+            //     event.classList.add("cm")
+            // } else if (/INFO\d+-G\d+/.test(ev.description)) {
+            //     event.classList.add("td")
+            // } else if (/INFO\d+-G\d+-\d+/.test(ev.description)) {
+            //     event.classList.add("tp")
+            // } else {
+            //     event.classList.add("other");
+            // }
 
             const top = (ev.start - startHour) * hourHeight;
             const height = ev.duration * hourHeight;
@@ -154,7 +177,7 @@ async function renderWeek() {
 
             const title = document.createElement("div")
             title.style.fontSize = "12px";
-            title.textContent = ev.text
+            title.textContent = ev.subject
 
             const location = document.createElement("div")
             location.style.fontSize = "14px"
@@ -164,7 +187,7 @@ async function renderWeek() {
 
             const description = document.createElement("div")
             description.style.fontSize = "12px"
-            description.textContent = ev.description
+            description.textContent = ev.teacher
 
             event.appendChild(title)
             event.appendChild(location)

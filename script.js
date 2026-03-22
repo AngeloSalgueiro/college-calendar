@@ -3,15 +3,6 @@ const startHour = 8;
 const endHour = 20;
 const hourHeight = 70;
 
-function parseICSDate(icsDate) {
-    return new Date(
-        icsDate.replace(
-            /(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/,
-            "$1-$2-$3T$4:$5:$6Z"
-        )
-    );
-}
-
 function getStartOfWeek(date) {
     const d = new Date(date);
     const day = d.getDay();
@@ -138,7 +129,6 @@ async function renderWeek() {
             const event = document.createElement("div");
             event.classList.add("event");
 
-            console.log(ev.category)
             switch (ev.category) {
                 case "CM":
                     event.classList.add("cm")

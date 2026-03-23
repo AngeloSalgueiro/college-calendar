@@ -14,48 +14,53 @@ function DayBody({ dayEvents }) {
         rows.push(row)
     }
 
-    let events = []
 
+
+    const groupedByStart = {};
     dayEvents.forEach(e => {
-        const category = () => {
-            switch (e.category) {
-                case "CM":
-                    return "cm"
-                case "TD":
-                    return "td"
-                case "TP":
-                    return "tp"
-                default:
-                    if (e.category.includes("Contrôle continu")) {
-                        return "controle"
-                    } else {
-                        return "other"
-                    }
-            }
-        }
+        if (!groupedByStart[e.start]) groupedByStart[e.start] = [];
+        groupedByStart[e.start].push(e);
+    });
 
-        const top = (e.start - startHour) * hourHeight;
-        const height = e.duration * hourHeight;
+    console.log(groupedByStart);
 
-        const style = {
-            top: top + "px",
-            height: height + "px"
-        }
+    const events = [];
 
-        const event = <div className={"event " + category()} style={style}>
-            <div style={{ fontSize: "12px" }}>
-                {e.subject}
-            </div>
-            <div style={{ fontSize: "14px", paddingTop: "4px", paddingBottom: "4px" }}>
-                {e.location}
-            </div>
-            <div style={{ fontSize: "12px" }}>
-                {e.teacher}
-            </div>
-        </div>
+    Object.values(groupedByStart).forEach(overlapGroup => {
+        const overlapCount = overlapGroup.length;
 
-        events.push(event)
-    })
+        overlapGroup.forEach((e, index) => {
+            const catClass = e.category === "CM" ? "cm" :
+                e.category === "TD" ? "td" :
+                    e.category === "TP" ? "tp" :
+                        e.category.includes("Contrôle continu") ? "controle" : "other";
+
+            const top = (e.start - startHour) * hourHeight;
+            const height = e.duration * hourHeight;
+
+            // Compute width and left based on overlap
+            const widthPercent = 100 / overlapCount;
+            const leftPercent = index * widthPercent;
+
+            const style = {
+                top: top + "px",
+                height: height + "px",
+                width: widthPercent + "%",
+                left: leftPercent + "%",
+                position: "absolute"
+            };
+
+            const event = (
+                <div className={"event " + catClass} style={style} key={e.start + e.subject + index}>
+                    <div style={{ fontSize: "12px" }}>{e.subject}</div>
+                    <div style={{ fontSize: "14px", paddingTop: "4px", paddingBottom: "4px" }}>{e.location}</div>
+                    <div style={{ fontSize: "12px" }}>{e.teacher}</div>
+                </div>
+            );
+
+            events.push(event);
+        });
+    });
 
     return <div className="day-body">
         {rows}

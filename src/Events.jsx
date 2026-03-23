@@ -30,7 +30,9 @@ export default async function getEvents() {
             teacher: e.teachers_for_blocks || "",
             location: e.rooms_for_item_details || "No location"
         });
+
     });
+
 
     return events;
 }

@@ -1,7 +1,0 @@
-@import "icon";
-
-.ib-circle-icon {
-    @include button-no-before-after;
-    background-color: $icon-color;
-    border-radius: 50%;
-}

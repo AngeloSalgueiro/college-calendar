@@ -6,6 +6,24 @@ import getEvents from './Events.jsx';
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const hourHeight = 70;
 
+function Event({ e, index, catClass, style }) {
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleClick = () => {
+        setIsClicked(current => !current);
+
+        setTimeout(() => {
+            setIsClicked(false);
+        }, 200);
+    };
+
+    return <div className={"event " + catClass + (isClicked ? "" : " show-more")} style={style} key={e.start + e.subject + index} onClick={handleClick}>
+        <div style={{ fontSize: "12px" }}>{e.subject}</div>
+        <div style={{ fontSize: "14px", paddingTop: "4px", paddingBottom: "4px" }}>{e.location}</div>
+        <div style={{ fontSize: "12px" }}>{e.teacher}</div>
+    </div>
+}
+
 function DayBody({ dayEvents }) {
     let rows = []
 
@@ -14,15 +32,11 @@ function DayBody({ dayEvents }) {
         rows.push(row)
     }
 
-
-
     const groupedByStart = {};
     dayEvents.forEach(e => {
         if (!groupedByStart[e.start]) groupedByStart[e.start] = [];
         groupedByStart[e.start].push(e);
     });
-
-    console.log(groupedByStart);
 
     const events = [];
 
@@ -38,7 +52,6 @@ function DayBody({ dayEvents }) {
             const top = (e.start - startHour) * hourHeight;
             const height = e.duration * hourHeight;
 
-            // Compute width and left based on overlap
             const widthPercent = 100 / overlapCount;
             const leftPercent = index * widthPercent;
 
@@ -51,11 +64,7 @@ function DayBody({ dayEvents }) {
             };
 
             const event = (
-                <div className={"event " + catClass} style={style} key={e.start + e.subject + index}>
-                    <div style={{ fontSize: "12px" }}>{e.subject}</div>
-                    <div style={{ fontSize: "14px", paddingTop: "4px", paddingBottom: "4px" }}>{e.location}</div>
-                    <div style={{ fontSize: "12px" }}>{e.teacher}</div>
-                </div>
+                <Event e={e} index={index} catClass={catClass} style={style} />
             );
 
             events.push(event);

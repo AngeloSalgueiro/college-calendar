@@ -47,7 +47,7 @@ button:hover {
   display: grid;
   position: relative;
   max-height: 70vh;
-  grid-template-columns: 80px repeat(5, 1fr);
+  grid-template-columns: 80px repeat(5, 234px);
   border-top: 1px solid #ddd;
   overflow: auto;
   scroll-behavior: smooth;
@@ -55,7 +55,8 @@ button:hover {
 
 .time-column {
   position: sticky;
-  left: 0;      /* stick at left */
+  left: 0;
+  /* stick at left */
   background: #fafafa;
   z-index: 2;
 }
@@ -71,7 +72,7 @@ button:hover {
 /* Day column */
 .day-column {
   width: 100%;
-  min-width: 245px;
+  min-width: 200px;
   border-right: 1px solid #eee;
   display: flex;
   flex-direction: column;
@@ -114,6 +115,21 @@ button:hover {
   border-radius: 6px;
   font-size: 12px;
   overflow: hidden;
+  cursor: pointer;
+}
+
+.show-more {
+  animation: crescendo .2s;
+}
+
+@keyframes crescendo {
+  0% {
+    transform: scale(.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .cm {

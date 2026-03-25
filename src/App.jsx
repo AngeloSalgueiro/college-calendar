@@ -1,9 +1,6 @@
 import { useState } from 'react'
-import Days from './Days.jsx';
 import './App.css'
-
-export const startHour = 8;
-export const endHour = 20;
+import Week from './Week.jsx';
 
 export function formatDateKey(date) {
   return date.getFullYear() + "-" +
@@ -19,18 +16,7 @@ function Header({ changeWeek, label }) {
   </div>
 }
 
-function TimeColumn() {
-  let slots = []
-  for (let h = startHour; h <= endHour; h++) {
-    const slot = <div className="time-slot">{h}:00</div>
-    slots.push(slot)
-  }
 
-  return <div className="time-column">
-    <div className="time-slot"></div>
-    {slots}
-  </div>
-}
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -63,10 +49,7 @@ function App() {
 
   return <div className="calendar">
     <Header changeWeek={changeWeek} label={label} />
-    <div className="week unselectable" id="weekContainer">
-      <TimeColumn />
-      <Days start={start} />
-    </div>
+    <Week start={start} />
   </div>;
 }
 

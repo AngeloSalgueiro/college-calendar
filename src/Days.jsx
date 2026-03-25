@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react'
-import { startHour, endHour } from './App.jsx';
+import { startHour, endHour } from './Week.jsx';
 import { formatDateKey } from './App.jsx';
-import getEvents from './data/Data.jsx';
 
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const hourHeight = 70;
@@ -86,35 +84,14 @@ function Day({ number, start, events }) {
     return <div className={"day-column" + (day.toDateString() === (new Date).toDateString() ? 'today' : '')} >
         <div className="day-header">
             {dayNames[number]}
-            <br></br>
+            <span> </span>
             {day.getDate()}
         </div>
         <DayBody dayEvents={dayEvents} />
     </div>
 }
 
-export default function Days({ start }) {
-
-    const [events, setEvents] = useState({});
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function fetchEvents() {
-            try {
-                const data = await getEvents();
-                setEvents(data);
-            } catch (err) {
-                console.error("Error fetching events:", err);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchEvents();
-    }, []);
-
-    if (loading) return <p>Loading...</p>;
-
+export default function Days({ start, events }) {
     let days = []
 
     for (let i = 0; i < 5; i++) {

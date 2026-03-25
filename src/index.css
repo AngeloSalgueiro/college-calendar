@@ -23,7 +23,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
 }
 
 button {
@@ -130,8 +129,8 @@ button:hover {
   cursor: pointer;
 }
 
-.event:active {
-  animation: crescendo .2s;
+.event.active {
+  animation: crescendo .3s;
 }
 
 @keyframes crescendo {

@@ -1,4 +1,4 @@
-import { formatDateKey } from './App.jsx';
+import { formatDateKey } from '../App.jsx';
 
 export default async function getEvents() {
     const response = await fetch("http://localhost:3000/calendar");

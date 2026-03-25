@@ -1,23 +1,21 @@
 import { useState, useEffect } from 'react'
 import { startHour, endHour } from './App.jsx';
 import { formatDateKey } from './App.jsx';
-import getEvents from './Events.jsx';
+import getEvents from './data/Data.jsx';
 
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const hourHeight = 70;
 
 function Event({ e, index, catClass, style }) {
-    const [isClicked, setIsClicked] = useState(false);
 
     const handleClick = () => {
-        setIsClicked(current => !current);
 
         setTimeout(() => {
             setIsClicked(false);
         }, 200);
     };
 
-    return <div className={"event " + catClass + (isClicked ? "" : " show-more")} style={style} key={e.start + e.subject + index} onClick={handleClick}>
+    return <div className={"event " + catClass} style={style} key={e.start + e.subject + index} onClick={handleClick}>
         <div style={{ fontSize: "12px" }}>{e.subject}</div>
         <div style={{ fontSize: "14px", paddingTop: "4px", paddingBottom: "4px" }}>{e.location}</div>
         <div style={{ fontSize: "12px" }}>{e.teacher}</div>
@@ -85,7 +83,7 @@ function Day({ number, start, events }) {
     const key = formatDateKey(day);
     const dayEvents = events[key] || [];
 
-    return <div className={"day-column " + (day.toDateString() === (new Date).toDateString() ? 'today' : '')}>
+    return <div className={"day-column" + (day.toDateString() === (new Date).toDateString() ? 'today' : '')} >
         <div className="day-header">
             {dayNames[number]}
             <br></br>

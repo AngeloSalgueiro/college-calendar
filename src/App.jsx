@@ -63,7 +63,7 @@ function App() {
 
   return <div className="calendar">
     <Header changeWeek={changeWeek} label={label} />
-    <div className="week" id="weekContainer">
+    <div className="week unselectable" id="weekContainer">
       <TimeColumn />
       <Days start={start} />
     </div>

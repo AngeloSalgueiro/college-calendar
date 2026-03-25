@@ -3,7 +3,7 @@ import { startHour, endHour } from './Week.jsx';
 import { formatDateKey } from './App.jsx';
 
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-const hourHeight = 70;
+const hourHeight = 60;
 
 function Event({ e, index, catClass, style }) {
     const [clicked, setIsClicked] = useState(false)

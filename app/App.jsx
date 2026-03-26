@@ -1,12 +1,6 @@
+'use client'
 import { useState } from 'react'
-import './App.css'
-import Week from './Week.jsx';
-
-export function formatDateKey(date) {
-  return date.getFullYear() + "-" +
-    String(date.getMonth() + 1).padStart(2, "0") + "-" +
-    String(date.getDate()).padStart(2, "0");
-}
+import WeekView from './Week.jsx';
 
 function Header({ changeWeek, label }) {
   return <div className="header">
@@ -15,8 +9,6 @@ function Header({ changeWeek, label }) {
     <button onClick={() => changeWeek(1)}>▶</button>
   </div>
 }
-
-
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -49,7 +41,7 @@ function App() {
 
   return <div className="calendar">
     <Header changeWeek={changeWeek} label={label} />
-    <Week start={start} />
+    <WeekView start={start} />
   </div>;
 }
 

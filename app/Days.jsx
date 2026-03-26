@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { startHour, endHour } from './Week.jsx';
-import { formatDateKey } from './App.jsx';
+
+function formatDateKey(date) {
+  return date.getFullYear() + "-" +
+    String(date.getMonth() + 1).padStart(2, "0") + "-" +
+    String(date.getDate()).padStart(2, "0");
+}
 
 const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const hourHeight = 60;
@@ -27,7 +32,7 @@ function DayBody({ dayEvents }) {
     let rows = []
 
     for (let h = startHour; h <= endHour; h++) {
-        const row = <div className="hour-row" hour={h}></div>
+        const row = <div h={h} className="hour-row" hour={h}></div>
         rows.push(row)
     }
 
@@ -98,9 +103,9 @@ export default function Days({ start, events }) {
     let days = []
 
     for (let i = 0; i < 5; i++) {
-        const day = <Day number={i} start={start} events={events} />
-        days.push(day)
-    }
+    const day = <Day key={i} number={i} start={start} events={events} />;
+    days.push(day);
+}
 
     return <>{days}</>
 

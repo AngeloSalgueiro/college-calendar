@@ -10,7 +10,6 @@ body {
 }
 
 .calendar {
-  max-width: 1400px;
   background: white;
   border-radius: 16px;
   padding: 20px;
@@ -40,7 +39,7 @@ button:hover {
 .week {
   display: grid;
   position: relative;
-  max-height: 70vh;
+  max-height: 80vh;
   grid-template-columns: 80px repeat(5, 234px);
   border-top: 1px solid #ddd;
   overflow: auto;
